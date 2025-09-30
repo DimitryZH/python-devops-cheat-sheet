@@ -74,9 +74,61 @@ Essential Python data structures for automation scripts.
 ## Running Locally
 
 1. Clone the repository:
-   ```bash
+```bash
    git clone https://github.com/<your-username>/practical-python-for-devops.git
    cd practical-python-for-devops
+```
+2. Install dependencies:
+```bash
+    pip install -r requirements.txt
+```
+Notes:
 
+- Some examples require additional tools or credentials (e.g., docker, kubectl, cloud SDKs, service account files).
 
+- YAML/Kubernetes examples use PyYAML and kubernetes Python client; cloud examples require respective SDKs (boto3, google-cloud-*, azure-*).
 
+3. Run any script:
+```bash
+python docker_practical_use_cases.py
+python kubernetes_practical_use_cases.py
+python cicd_practical_use_cases.py
+python azure_practical_use_cases.py
+```
+## Running in Docker
+
+1. Build Docker image:
+```bash
+docker build -t devops-python .
+```
+
+2. Run a script inside the container:
+
+```bash
+docker run --rm -it devops-python python azure_practical_use_cases.py
+docker run --rm -it devops-python python gcp_practical_use_cases.py
+docker run --rm -it devops-python python terraform_practical_use_cases.py
+```
+
+3. Mount cloud credentials and kubeconfig:
+
+```bash
+docker run --rm -it \
+    -v ~/.aws:/root/.aws \
+    -v ~/.azure:/root/.azure \
+    -v ~/.config/gcloud:/root/.config/gcloud \
+    -v ~/.kube:/root/.kube \
+    devops-python python boto3_practical_use_cases.py
+```
+
+4. Optional: Mount project directory for live editing:
+
+```bash
+docker run --rm -it \
+    -v $(pwd):/app \
+    -v ~/.aws:/root/.aws \
+    -v ~/.azure:/root/.azure \
+    -v ~/.config/gcloud:/root/.config/gcloud \
+    -v ~/.kube:/root/.kube \
+    devops-python python /app/terraform_practical_use_cases.py
+    ```
